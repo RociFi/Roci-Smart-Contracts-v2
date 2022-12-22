@@ -1,0 +1,13 @@
+node_modules
+.env
+typechain
+typechain-types
+.vscode
+.openzeppelin
+abi
+package-lock.json
+#Hardhat files
+cache
+artifacts
+abi
+

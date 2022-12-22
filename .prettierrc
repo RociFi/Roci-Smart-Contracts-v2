@@ -1,0 +1,30 @@
+{
+  "printWidth": 120,
+  "trailingComma": "es5",
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "overrides": [
+    {
+      "files": "*.sol",
+      "options": {
+        "semi": true,
+        "printWidth": 100,
+        "tabWidth": 4,
+        "singleQuote": false
+      }
+    },
+
+    {
+      "files": "*.ts",
+      "options": {
+        "printWidth": 80,
+        "trailingComma": "all",
+        "semi": true,
+        "singleQuote": false,
+        "tabWidth": 2,
+        "bracketSpacing": true
+      }
+    }
+  ]
+}
