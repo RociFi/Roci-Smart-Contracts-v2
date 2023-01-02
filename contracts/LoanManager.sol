@@ -267,7 +267,7 @@ contract LoanManager is
             LoanLib.Status.NEW
         );
 
-        emit LoanCreated(msg.sender, address(pool), vars.loanId, s.interest, amount);
+        emit LoanCreated(msg.sender, address(pool), vars.loanId, amount);
 
         userLoanIds[msg.sender].push(vars.loanId);
 
@@ -401,9 +401,7 @@ contract LoanManager is
         underlyingToken.safeTransferFrom(
             msg.sender,
             address(loan.pool),
-            info.notCovered > 0
-                ? loan.amount - info.notCovered
-                : loan.amount + uint256(poolValueAdjustment)
+            loan.amount - info.notCovered - treasuryShare
         );
 
         limitManager.onRepayOrLiquidate(loan.borrower, loan.pool, loan.amount - info.notCovered);
@@ -444,7 +442,6 @@ contract LoanManager is
             loan.borrower,
             loan.pool,
             loanId,
-            poolValueAdjustment > 0 ? uint256(poolValueAdjustment) : 0,
             block.timestamp,
             loan.amount,
             info.toLiquidate,

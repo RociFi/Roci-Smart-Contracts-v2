@@ -16,15 +16,14 @@ interface ILoanManager {
         address indexed borrower,
         address indexed pool,
         uint256 indexed loanId,
-        uint256 apr,
         uint256 amount
     );
 
     event LoanPayed(
-        address payer,
+        address indexed payer,
         address indexed borrower,
         address indexed pool,
-        uint256 indexed loanId,
+        uint256 loanId,
         uint256 interestAccrued,
         uint256 repayAmount,
         uint256 outstanding
@@ -36,7 +35,6 @@ interface ILoanManager {
         address indexed borrower,
         IPool indexed pool,
         uint256 indexed loanId,
-        uint256 interestAccrued,
         uint256 timestamp,
         uint256 remainingLoanAmount, // loan amount which was not covered by collateral => remains to be paid
         uint256 liquidatedCollateral, // amount of liquidated collateral
