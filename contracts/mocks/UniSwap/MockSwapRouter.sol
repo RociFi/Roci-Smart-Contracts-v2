@@ -39,12 +39,9 @@ contract MockSwapRouter is ISwapRouter {
         MockIERC20(tokenOut).mint(recipient, amountOut);
     }
 
-    function exactInputSingle(ExactInputSingleParams calldata params)
-        external
-        payable
-        override
-        returns (uint256 amountOut)
-    {
+    function exactInputSingle(
+        ExactInputSingleParams calldata params
+    ) external payable override returns (uint256 amountOut) {
         amountOut = exactInputInternal(
             params.amountIn,
             params.recipient,
@@ -57,12 +54,9 @@ contract MockSwapRouter is ISwapRouter {
         require(amountOut >= params.amountOutMinimum, "Too little received");
     }
 
-    function exactInput(ExactInputParams memory params)
-        external
-        payable
-        override
-        returns (uint256 amountOut)
-    {
+    function exactInput(
+        ExactInputParams memory params
+    ) external payable override returns (uint256 amountOut) {
         address payer = msg.sender; // msg.sender pays for the first hop
 
         while (true) {
@@ -91,19 +85,13 @@ contract MockSwapRouter is ISwapRouter {
         require(amountOut >= params.amountOutMinimum, "Too little received");
     }
 
-    function exactOutputSingle(ExactOutputSingleParams calldata params)
-        external
-        payable
-        override
-        returns (uint256 amountIn)
-    {}
+    function exactOutputSingle(
+        ExactOutputSingleParams calldata params
+    ) external payable override returns (uint256 amountIn) {}
 
-    function exactOutput(ExactOutputParams calldata params)
-        external
-        payable
-        override
-        returns (uint256 amountIn)
-    {}
+    function exactOutput(
+        ExactOutputParams calldata params
+    ) external payable override returns (uint256 amountIn) {}
 
     function uniswapV3SwapCallback(
         int256 amount0Delta,

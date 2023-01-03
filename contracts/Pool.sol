@@ -47,12 +47,9 @@ contract Pool is
         _disableInitializers();
     }
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        whenPaused
-        onlyRole(Roles.UPDATER)
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override whenPaused onlyRole(Roles.UPDATER) {}
 
     function initialize(
         IERC20MetadataUpgradeable _token,
@@ -114,11 +111,10 @@ contract Pool is
      * @param underlyingTokenAmount underlyingToken amount
      * @param version Pool version
      */
-    function deposit(uint256 underlyingTokenAmount, string memory version)
-        external
-        checkVersion(version)
-        ifNotPaused
-    {
+    function deposit(
+        uint256 underlyingTokenAmount,
+        string memory version
+    ) external checkVersion(version) ifNotPaused {
         uint256 rTokenAmount = stablecoinToRToken(underlyingTokenAmount);
 
         lastDepositTimestamp[msg.sender] = block.timestamp;
@@ -137,11 +133,10 @@ contract Pool is
      * @param rTokenAmount Roci Debt Token amount
      * @param version Pool version
      */
-    function withdraw(uint256 rTokenAmount, string memory version)
-        external
-        checkVersion(version)
-        ifNotPaused
-    {
+    function withdraw(
+        uint256 rTokenAmount,
+        string memory version
+    ) external checkVersion(version) ifNotPaused {
         require(
             block.timestamp > (lastDepositTimestamp[msg.sender] + lockupPeriod),
             Errors.POOL_LOCKUP
@@ -218,10 +213,10 @@ contract Pool is
      * @param loanManager LoanManager address
      * @param amount amount to approve
      */
-    function approveLoanManager(address loanManager, uint256 amount)
-        external
-        onlyRole(Roles.ADMIN)
-    {
+    function approveLoanManager(
+        address loanManager,
+        uint256 amount
+    ) external onlyRole(Roles.ADMIN) {
         _checkRole(Roles.LOAN_MANAGER, loanManager);
 
         underlyingToken.approve(loanManager, amount);

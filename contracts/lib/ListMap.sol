@@ -120,9 +120,10 @@ library ListMap {
      * @param listMap listMap which should be changed
      * @param value item to remove from listMap
      */
-    function remove(_IERC20MetadataUpgradeable storage listMap, IERC20MetadataUpgradeable value)
-        internal
-    {
+    function remove(
+        _IERC20MetadataUpgradeable storage listMap,
+        IERC20MetadataUpgradeable value
+    ) internal {
         for (uint256 i; i < listMap.list.length; i++) {
             if (listMap.list[i] == value) {
                 listMap.list[i] = listMap.list[listMap.list.length - 1];
@@ -225,9 +226,10 @@ library ListMap {
      * @param listMap listMap which should be changed
      * @param value item to add to listMap
      */
-    function add(_IERC20MetadataUpgradeable storage listMap, IERC20MetadataUpgradeable value)
-        internal
-    {
+    function add(
+        _IERC20MetadataUpgradeable storage listMap,
+        IERC20MetadataUpgradeable value
+    ) internal {
         require(!listMap.includes[value], Errors.ELEMENT_IN_ARRAY);
         listMap.includes[value] = true;
         listMap.list.push(value);

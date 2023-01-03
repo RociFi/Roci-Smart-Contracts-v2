@@ -45,22 +45,14 @@ interface ICollateralManager {
 
     function wrapper() external view returns (IWrapper);
 
-    function collateralToUserToAmount(IERC20MetadataUpgradeable, address)
-        external
-        view
-        returns (uint256);
+    function collateralToUserToAmount(
+        IERC20MetadataUpgradeable,
+        address
+    ) external view returns (uint256);
 
-    function freeze(
-        address user,
-        IERC20MetadataUpgradeable token,
-        uint256 amount
-    ) external;
+    function freeze(address user, IERC20MetadataUpgradeable token, uint256 amount) external;
 
-    function unfreeze(
-        address user,
-        IERC20MetadataUpgradeable token,
-        uint256 amount
-    ) external;
+    function unfreeze(address user, IERC20MetadataUpgradeable token, uint256 amount) external;
 
     function addCollateral(
         address user,

@@ -34,18 +34,9 @@ interface ILimitManager {
         uint256 timestamp
     );
 
-    function onBorrow(
-        address user,
-        IPool pool,
-        uint16 score,
-        uint256 amount
-    ) external;
+    function onBorrow(address user, IPool pool, uint16 score, uint256 amount) external;
 
-    function onRepayOrLiquidate(
-        address user,
-        IPool pool,
-        uint256 amount
-    ) external;
+    function onRepayOrLiquidate(address user, IPool pool, uint256 amount) external;
 
     function onLoanFulfillment(address user, IPool pool) external;
 }

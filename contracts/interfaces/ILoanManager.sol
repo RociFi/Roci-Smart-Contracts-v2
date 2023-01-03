@@ -72,7 +72,10 @@ interface ILoanManager {
 
     function loans(uint256) external view returns (LoanLib.Loan memory);
 
-    function liquidate(uint256 loanId, string memory version)
+    function liquidate(
+        uint256 loanId,
+        string memory version
+    )
         external
         returns (
             IERC20MetadataUpgradeable collateralToken,
@@ -81,10 +84,9 @@ interface ILoanManager {
             IPool pool
         );
 
-    function getDelinquencyInfo(uint256 loanId)
-        external
-        view
-        returns (LoanLib.DelinquencyInfo memory info);
+    function getDelinquencyInfo(
+        uint256 loanId
+    ) external view returns (LoanLib.DelinquencyInfo memory info);
 
     function currentVersion() external view returns (string memory);
 }

@@ -59,11 +59,9 @@ contract SettingsProvider is
         _disableInitializers();
     }
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlyRole(Roles.UPDATER)
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyRole(Roles.UPDATER) {}
 
     function initialize(address admin) public initializer {
         require(admin != address(0), Errors.ZERO_ADDRESS);
@@ -155,11 +153,9 @@ contract SettingsProvider is
      * @dev Method to get all collaterals allowed in pool
      * @param pool pool address
      */
-    function getPoolCollaterals(IPool pool)
-        external
-        view
-        returns (IERC20MetadataUpgradeable[] memory)
-    {
+    function getPoolCollaterals(
+        IPool pool
+    ) external view returns (IERC20MetadataUpgradeable[] memory) {
         return poolCollaterals[pool].list;
     }
 
@@ -168,10 +164,10 @@ contract SettingsProvider is
      * @param pool pool address
      * @param _collaterals list of collateral addresses
      */
-    function addPoolCollaterals(IPool pool, IERC20MetadataUpgradeable[] memory _collaterals)
-        external
-        onlyRole(Roles.ADMIN)
-    {
+    function addPoolCollaterals(
+        IPool pool,
+        IERC20MetadataUpgradeable[] memory _collaterals
+    ) external onlyRole(Roles.ADMIN) {
         require(pools.includes[pool], Errors.SETTINGS_PROVIDER_POOL_NOT_SET);
         poolCollaterals[pool].addList(_collaterals);
         emit PoolCollateralsAdded(msg.sender, pool, _collaterals, block.timestamp);
@@ -182,10 +178,10 @@ contract SettingsProvider is
      * @param pool pool address
      * @param _collaterals list of collateral addresses
      */
-    function removePoolCollaterals(IPool pool, IERC20MetadataUpgradeable[] memory _collaterals)
-        external
-        onlyRole(Roles.ADMIN)
-    {
+    function removePoolCollaterals(
+        IPool pool,
+        IERC20MetadataUpgradeable[] memory _collaterals
+    ) external onlyRole(Roles.ADMIN) {
         require(pools.includes[pool], Errors.SETTINGS_PROVIDER_POOL_NOT_SET);
         poolCollaterals[pool].removeList(_collaterals);
         emit PoolCollateralsRemoved(msg.sender, pool, _collaterals, block.timestamp);
@@ -267,11 +263,10 @@ contract SettingsProvider is
      * @param pool pool address
      * @param score score value
      */
-    function getPoolToScoreDurations(IPool pool, uint16 score)
-        external
-        view
-        returns (uint256[] memory)
-    {
+    function getPoolToScoreDurations(
+        IPool pool,
+        uint16 score
+    ) external view returns (uint256[] memory) {
         return poolToScoreDurations[pool][score].list;
     }
 

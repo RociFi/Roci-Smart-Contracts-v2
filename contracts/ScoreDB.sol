@@ -59,12 +59,9 @@ contract ScoreDB is
         _grantRole(Roles.ADMIN, admin);
     }
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        whenPaused
-        onlyRole(Roles.UPDATER)
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override whenPaused onlyRole(Roles.UPDATER) {}
 
     /**
      * @dev Modifier to verify that score was not tampered

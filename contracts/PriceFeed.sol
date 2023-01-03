@@ -52,11 +52,9 @@ contract PriceFeed is
         _grantRole(Roles.ADMIN, admin);
     }
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlyRole(Roles.UPDATER)
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyRole(Roles.UPDATER) {}
 
     /**
      * @dev Method to add/remove Chainlink price feed
@@ -155,9 +153,9 @@ contract PriceFeed is
         bool direct
     ) internal pure returns (uint256) {
         if (direct) {
-            return (amount * price) / 10**decimals;
+            return (amount * price) / 10 ** decimals;
         }
-        return (amount * 10**decimals) / price;
+        return (amount * 10 ** decimals) / price;
     }
 
     /**
