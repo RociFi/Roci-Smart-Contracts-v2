@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 import {IERC20MetadataUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol";
@@ -56,12 +56,9 @@ contract LoanManager is
     //Statuses table
     LoanLib.StatusMatrix internal table;
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        whenPaused
-        onlyRole(Roles.UPDATER)
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override whenPaused onlyRole(Roles.UPDATER) {}
 
     function initialize(address _admin) public initializer {
         require(_admin != address(0), Errors.ZERO_ADDRESS);
@@ -91,10 +88,9 @@ contract LoanManager is
         return _loans[loanId];
     }
 
-    function setCollateralManager(ICollateralManager _collateralManager)
-        external
-        onlyRole(Roles.ADMIN)
-    {
+    function setCollateralManager(
+        ICollateralManager _collateralManager
+    ) external onlyRole(Roles.ADMIN) {
         emit CollateralManagerChanged(msg.sender, collateralManager, _collateralManager);
         collateralManager = _collateralManager;
     }
@@ -109,10 +105,9 @@ contract LoanManager is
         priceFeed = _priceFeed;
     }
 
-    function setSettingsProvider(ISettingsProvider _settingsProvider)
-        external
-        onlyRole(Roles.ADMIN)
-    {
+    function setSettingsProvider(
+        ISettingsProvider _settingsProvider
+    ) external onlyRole(Roles.ADMIN) {
         emit SettingsProviderChanged(msg.sender, settingsProvider, _settingsProvider);
         settingsProvider = _settingsProvider;
     }
@@ -371,18 +366,16 @@ contract LoanManager is
         underlyingToken.safeTransferFrom(msg.sender, address(loan.pool), amount - treasuryShare);
     }
 
-    function liquidate(uint256 loanId, string memory version)
+    function liquidate(
+        uint256 loanId,
+        string memory version
+    )
         external
         whenNotPaused
         nonReentrant
         checkVersion(version)
         onlyRole(Roles.LIQUIDATOR)
-        returns (
-            IERC20MetadataUpgradeable,
-            IERC20MetadataUpgradeable,
-            uint256,
-            IPool
-        )
+        returns (IERC20MetadataUpgradeable, IERC20MetadataUpgradeable, uint256, IPool)
     {
         LoanLib.DelinquencyInfo memory info = getDelinquencyInfo(loanId);
 
@@ -480,11 +473,9 @@ contract LoanManager is
         return treasuryAmount;
     }
 
-    function getDelinquencyInfo(uint256 loanId)
-        public
-        view
-        returns (LoanLib.DelinquencyInfo memory)
-    {
+    function getDelinquencyInfo(
+        uint256 loanId
+    ) public view returns (LoanLib.DelinquencyInfo memory) {
         LoanLib.Loan memory loan = _loans[loanId];
 
         require(isDelinquent(loanId), Errors.LOAN_MANAGER_LOAN_IS_LIQUID);

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 import {IERC20MetadataUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol";
@@ -84,11 +84,9 @@ contract Liquidator is Initializable, AccessControlUpgradeable, UUPSUpgradeable,
     //Liquidity records
     LiquidityToSwap[] public liquidity;
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlyRole(Roles.UPDATER)
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyRole(Roles.UPDATER) {}
 
     function initialize(address _admin) public initializer {
         require(_admin != address(0), Errors.ZERO_ADDRESS);
@@ -160,11 +158,10 @@ contract Liquidator is Initializable, AccessControlUpgradeable, UUPSUpgradeable,
      * @param loanId id of the loan
      * @param version Liquidator contract version
      */
-    function liquidateAndStore(uint256 loanId, string memory version)
-        external
-        checkVersion(version)
-        onlyRole(Roles.LIQUIDATION_BOT)
-    {
+    function liquidateAndStore(
+        uint256 loanId,
+        string memory version
+    ) external checkVersion(version) onlyRole(Roles.LIQUIDATION_BOT) {
         require(address(loanManager) != address(0), Errors.ZERO_ADDRESS);
 
         (

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -52,11 +52,9 @@ contract PriceFeed is
         _grantRole(Roles.ADMIN, admin);
     }
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlyRole(Roles.UPDATER)
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyRole(Roles.UPDATER) {}
 
     /**
      * @dev Method to add/remove Chainlink price feed
@@ -144,7 +142,7 @@ contract PriceFeed is
      * @dev Method to calculate asset price
      * @param amount amount of asset
      * @param price price from Chainlink feed
-     * @param decimals decimals for "from" asset in Chainlink 
+     * @param decimals decimals for "from" asset in Chainlink
      * @param direct flag to decide is asset "from" or "to" in Chainlink
      * @return result calculated price
      */
@@ -155,9 +153,9 @@ contract PriceFeed is
         bool direct
     ) internal pure returns (uint256) {
         if (direct) {
-            return (amount * price) / 10**decimals;
+            return (amount * price) / 10 ** decimals;
         }
-        return (amount * 10**decimals) / price;
+        return (amount * 10 ** decimals) / price;
     }
 
     /**

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
@@ -59,12 +59,9 @@ contract ScoreDB is
         _grantRole(Roles.ADMIN, admin);
     }
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        whenPaused
-        onlyRole(Roles.UPDATER)
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override whenPaused onlyRole(Roles.UPDATER) {}
 
     /**
      * @dev Modifier to verify that score was not tampered

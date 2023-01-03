@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 interface IWrapper {
@@ -12,9 +12,5 @@ interface IWrapper {
 
     function transfer(address dst, uint256 wad) external returns (bool);
 
-    function transferFrom(
-        address src,
-        address dst,
-        uint256 wad
-    ) external returns (bool);
+    function transferFrom(address src, address dst, uint256 wad) external returns (bool);
 }
