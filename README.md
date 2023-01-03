@@ -1,3 +1,5 @@
+[![License: GPL v3](https://img.shields.io/badge/License-MIT-blue.svg)]([https://www.gnu.org/licenses/mit](https://opensource.org/licenses/MIT))
+
 # RociFI protocol (v2)
 
 ## Development installation
