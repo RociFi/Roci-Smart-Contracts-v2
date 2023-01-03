@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -12,7 +12,6 @@ import {Roles} from "./lib/Roles.sol";
 import {Errors} from "./lib/Errors.sol";
 import {Version} from "./lib/Version.sol";
 import {LIMIT_MANAGER_VERSION} from "./lib/ContractVersions.sol";
-
 
 /*
  * @title LimitManager

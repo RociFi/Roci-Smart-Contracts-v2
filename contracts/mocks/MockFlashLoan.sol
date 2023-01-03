@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 import {Pool} from "../../contracts/Pool.sol";
@@ -13,20 +13,20 @@ contract MockFlashLoan {
         token = MockERC20(_token);
     }
 
-    function executeOperation(
-        uint256 depositAmount,
-        string memory poolVersion
-    ) external returns (bool) {
+    function executeOperation(uint256 depositAmount, string memory poolVersion)
+        external
+        returns (bool)
+    {
         flashDeposit(depositAmount, poolVersion);
         flashWithdraw(depositAmount, poolVersion);
         return true;
     }
 
-    function flashDeposit(uint depositAmount, string memory poolVersion) public {
+    function flashDeposit(uint256 depositAmount, string memory poolVersion) public {
         pool.deposit(depositAmount, poolVersion);
     }
 
-    function flashWithdraw(uint depositAmount, string memory poolVersion) public {
+    function flashWithdraw(uint256 depositAmount, string memory poolVersion) public {
         pool.withdraw(depositAmount, poolVersion);
     }
 

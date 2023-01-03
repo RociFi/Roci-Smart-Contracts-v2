@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 import {IERC20MetadataUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol";
@@ -10,8 +10,8 @@ import {Errors} from "./Errors.sol";
 /*
  * @title ListMap
  * @author RociFi Labs
- * @notice Library for combining lists and mapping 
- * @notice Allows to manage easily collections and avoid iterations 
+ * @notice Library for combining lists and mapping
+ * @notice Allows to manage easily collections and avoid iterations
  */
 library ListMap {
     struct _uint256 {
@@ -35,7 +35,7 @@ library ListMap {
     }
 
     /**
-     * @dev remove list 
+     * @dev remove list
      * @param listMap listMap which should be changed
      * @param list list of items to remove from listMap
      */
@@ -46,7 +46,7 @@ library ListMap {
     }
 
     /**
-     * @dev remove list 
+     * @dev remove list
      * @param listMap listMap which should be changed
      * @param list list of items to remove from listMap
      */
@@ -57,7 +57,7 @@ library ListMap {
     }
 
     /**
-     * @dev remove list 
+     * @dev remove list
      * @param listMap listMap which should be changed
      * @param list list of items to remove from listMap
      */
@@ -71,7 +71,7 @@ library ListMap {
     }
 
     /**
-     * @dev remove list 
+     * @dev remove list
      * @param listMap listMap which should be changed
      * @param list list of items to remove from listMap
      */
@@ -82,7 +82,7 @@ library ListMap {
     }
 
     /**
-     * @dev remove item 
+     * @dev remove item
      * @param listMap listMap which should be changed
      * @param value item to remove from listMap
      */
@@ -99,7 +99,7 @@ library ListMap {
     }
 
     /**
-     * @dev remove item 
+     * @dev remove item
      * @param listMap listMap which should be changed
      * @param value item to remove from listMap
      */
@@ -116,7 +116,7 @@ library ListMap {
     }
 
     /**
-     * @dev remove item 
+     * @dev remove item
      * @param listMap listMap which should be changed
      * @param value item to remove from listMap
      */
@@ -135,7 +135,7 @@ library ListMap {
     }
 
     /**
-     * @dev remove item 
+     * @dev remove item
      * @param listMap listMap which should be changed
      * @param value item to remove from listMap
      */
@@ -152,7 +152,7 @@ library ListMap {
     }
 
     /**
-     * @dev add list 
+     * @dev add list
      * @param listMap listMap which should be changed
      * @param list list of items to add to listMap
      */
@@ -163,7 +163,7 @@ library ListMap {
     }
 
     /**
-     * @dev add list 
+     * @dev add list
      * @param listMap listMap which should be changed
      * @param list list of items to add to listMap
      */
@@ -174,7 +174,7 @@ library ListMap {
     }
 
     /**
-     * @dev add list 
+     * @dev add list
      * @param listMap listMap which should be changed
      * @param list list of items to add to listMap
      */
@@ -188,7 +188,7 @@ library ListMap {
     }
 
     /**
-     * @dev add list 
+     * @dev add list
      * @param listMap listMap which should be changed
      * @param list list of items to add to listMap
      */
@@ -199,7 +199,7 @@ library ListMap {
     }
 
     /**
-     * @dev add item 
+     * @dev add item
      * @param listMap listMap which should be changed
      * @param value item to add to listMap
      */
@@ -210,7 +210,7 @@ library ListMap {
     }
 
     /**
-     * @dev add item 
+     * @dev add item
      * @param listMap listMap which should be changed
      * @param value item to add to listMap
      */
@@ -221,7 +221,7 @@ library ListMap {
     }
 
     /**
-     * @dev add item 
+     * @dev add item
      * @param listMap listMap which should be changed
      * @param value item to add to listMap
      */
@@ -234,7 +234,7 @@ library ListMap {
     }
 
     /**
-     * @dev add item 
+     * @dev add item
      * @param listMap listMap which should be changed
      * @param value item to add to listMap
      */
