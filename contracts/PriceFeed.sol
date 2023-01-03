@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -144,7 +144,7 @@ contract PriceFeed is
      * @dev Method to calculate asset price
      * @param amount amount of asset
      * @param price price from Chainlink feed
-     * @param decimals decimals for "from" asset in Chainlink 
+     * @param decimals decimals for "from" asset in Chainlink
      * @param direct flag to decide is asset "from" or "to" in Chainlink
      * @return result calculated price
      */
