@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "Smart contracts for Roci Finance",
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@chainlink/contracts": "^0.4.1",
     "@openzeppelin/contracts": "^4.7.3",
