@@ -14,12 +14,7 @@ import {Version} from "./lib/Version.sol";
 import {NFCS_VERSION} from "./lib/ContractVersions.sol";
 import {Errors} from "./lib/Errors.sol";
 
-// REMOVE when v1 will be no longer maintained
-import {IAddressBook} from "./nfcs-compatibility/IAddressBook.sol";
-import {ScoreDBInterface} from "./nfcs-compatibility/ScoreDBInterface.sol";
-import {IERC20PaymentStandard} from "./nfcs-compatibility/IERC20PaymentStandard.sol";
-import {NFCSInterface} from "./nfcs-compatibility/NFCSInterface.sol";
-import {ROLE_PAYMENT_CONTRACT, ROLE_ORACLE, ROLE_ADMIN} from "./nfcs-compatibility/Globals.sol";
+import "./interfaces/INFCS.sol";
 
 /**
  * @title An ERC721 token contract leveraging Openzeppelin for contract base and upgradeability (UUPS).
@@ -34,7 +29,7 @@ contract NFCS is
     PausableUpgradeable,
     OwnableUpgradeable,
     UUPSUpgradeable,
-    NFCSInterface,
+    INFCS,
     Version
 {
     /// @custom:oz-upgrades-unsafe-allow constructor
@@ -89,6 +84,17 @@ contract NFCS is
 
     event Migration(uint256 timestamp, uint256 indexed tokenId, address indexed executor);
 
+    event ImageFeeChange(uint256 timestamp, uint256 oldValue, uint256 newValue);
+
+    event TreasuryAddressChange(uint256 timestamp, address oldAddress, address newAddress);
+
+    event NfcsIdToImageChange(
+        uint256 timestamp,
+        uint256 indexed tokenId,
+        string oldImage,
+        string newImage
+    );
+
     // V1 address managing contract
     IAddressBook public addressBook;
 
@@ -105,6 +111,10 @@ contract NFCS is
 
     mapping(bytes4 => bool) public funcSelectorPaused;
 
+    mapping(uint256 => string) public nfcsIdToImageUrl;
+    uint256 public imageFee;
+    address public treasuryAddress;
+
     bytes32 private constant _DOMAIN_TYPE_HASH =
         keccak256("EIP712Domain(string name,string version)");
 
@@ -117,15 +127,6 @@ contract NFCS is
      */
     modifier exists(uint256 tokenId) {
         require(_exists(tokenId), Errors.NFCS_NONEXISTENT_TOKEN);
-        _;
-    }
-
-    /**
-     * @dev Checks that function caller has role
-     * @param _role role to check
-     */
-    modifier onlyRole(uint256 _role) {
-        require(msg.sender == lookup(_role), addressBook.roleLookupErrorMessage(_role));
         _;
     }
 
@@ -253,10 +254,11 @@ contract NFCS is
      * @param version version of NFCS contract
      */
     function mintToken(
-        address[] memory bundle,
-        bytes[] memory signatures,
-        string memory version
-    ) public override ifNotPaused checkVersion(version) {
+        address[] calldata bundle,
+        bytes[] calldata signatures,
+        string calldata imageUrl,
+        string calldata version
+    ) public payable override ifNotPaused checkVersion(version) {
         require(bundle.length > 0 && bundle.length == signatures.length, Errors.ARGUMENTS_LENGTH);
 
         address primaryAddress = bundle[0];
@@ -276,6 +278,10 @@ contract NFCS is
         _safeMint(primaryAddress, tokenId);
 
         emit TokenMinted(block.timestamp, primaryAddress, tokenId, bundle);
+
+        if (bytes(imageUrl).length != 0) {
+            setNfcsIdToImageUrl(imageUrl);
+        }
     }
 
     /**
@@ -363,12 +369,31 @@ contract NFCS is
      * @dev base URI setter
      * @param uri URI string
      */
-    function setBaseURI(string memory uri) external onlyRole(ROLE_ADMIN) {
+    function setBaseURI(string memory uri) external onlyOwner {
         baseUri = uri;
     }
 
     function _baseURI() internal view override returns (string memory) {
         return baseUri;
+    }
+
+    function setNfcsIdToImageUrl(string memory imageUrl) public payable {
+        require(msg.value >= imageFee, Errors.NFCS_IMAGE_FEE);
+        require(treasuryAddress != address(0), Errors.NFCS_TREASURY_ADDRESS);
+        payable(treasuryAddress).transfer(msg.value);
+        uint256 nfcsId = tokenOfOwnerByIndex(msg.sender, 0);
+        emit NfcsIdToImageChange(block.timestamp, nfcsId, nfcsIdToImageUrl[nfcsId], imageUrl);
+        nfcsIdToImageUrl[nfcsId] = imageUrl;
+    }
+
+    function setImageFee(uint256 _imageFee) external onlyOwner {
+        emit ImageFeeChange(block.timestamp, imageFee, _imageFee);
+        imageFee = _imageFee;
+    }
+
+    function setTreasuryAddress(address _treasuryAddress) external onlyOwner {
+        emit TreasuryAddressChange(block.timestamp, treasuryAddress, _treasuryAddress);
+        treasuryAddress = _treasuryAddress;
     }
 
     /**
@@ -450,62 +475,5 @@ contract NFCS is
         bytes memory
     ) public virtual override(ERC721Upgradeable) {
         revert("ModifiedSafeTransferFrom: safeTransferFrom not supported");
-    }
-
-    /**
-     * @dev V1: functions for global and daily limits
-     */
-    function getLimits()
-        external
-        view
-        override
-        returns (
-            uint128 dailyLimit,
-            uint128 globalLimit,
-            uint128 userDailyLimit,
-            uint128 userGlobalLimit
-        )
-    {
-        dailyLimit = addressBook.dailyLimit();
-        globalLimit = addressBook.globalLimit();
-        userDailyLimit = addressBook.userDailyLimit();
-        userGlobalLimit = addressBook.userGlobalLimit();
-    }
-
-    function getNFCSLimits(uint256 _nfcsId)
-        external
-        view
-        override
-        returns (uint128 dailyLimit, uint128 globalLimit)
-    {
-        uint16 score = ScoreDBInterface(lookup(ROLE_ORACLE)).getScore(_nfcsId).creditScore;
-        uint128 globalNFCSLimit = addressBook.globalNFCSLimit(_nfcsId);
-        return
-            globalNFCSLimit == 0 ? (0, addressBook.scoreGlobalLimit(score)) : (0, globalNFCSLimit);
-    }
-
-    function lookup(uint256 _role) internal view returns (address contractAddress) {
-        contractAddress = addressBook.addressList(_role);
-
-        require(contractAddress != address(0), addressBook.roleLookupErrorMessage(_role));
-    }
-
-    function getTotalOutstanding(uint256 _nfcsId)
-        external
-        view
-        override
-        returns (
-            uint256 globalOutstanding,
-            uint256 userOutstanding,
-            uint256 nfcsOutstanding
-        )
-    {
-        IERC20PaymentStandard investor = IERC20PaymentStandard(
-            addressBook.addressList(ROLE_PAYMENT_CONTRACT)
-        );
-
-        userOutstanding += investor.getUserTotalOutstanding(_nfcsId);
-        globalOutstanding += investor.getTotalOutstanding();
-        nfcsOutstanding += investor.getNFCSTotalOutstanding(_nfcsId);
     }
 }
